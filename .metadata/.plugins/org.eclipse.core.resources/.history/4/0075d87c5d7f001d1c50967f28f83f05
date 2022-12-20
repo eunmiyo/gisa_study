@@ -1,0 +1,40 @@
+@charset "UTF-8";
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+header {
+	top: 0;
+	height: 150px;
+	line-height: 150px; /* 수평 가운데 정렬 */
+	width: 100%;
+	background: blue;
+	text-align: center;
+	
+}
+
+nav ul {
+	
+}
+
+nav ul li {
+	
+}
+
+a {
+	
+}
+
+a:hover {
+	
+}
+
+section {
+	
+}
+
+footer {
+	
+}
