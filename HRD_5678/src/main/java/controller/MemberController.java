@@ -69,9 +69,8 @@ public class MemberController extends HttpServlet {
 			
 		case "/ranklist" :
 			site = member.rankList(request, response);
-			break;	
-			
-			
+			break;
+					
 		}
 		
 		getServletContext().getRequestDispatcher("/" + site).forward(request, response);

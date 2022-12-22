@@ -10,7 +10,7 @@
 <body>
 	<%@ include file="top.jsp" %>
 	<section>
-		<div class = "titel">과정평가형 자격 CBQ</div>
+		<div class = "title">과정평가형 자격 CBQ</div>
 		<p>무언가의 내용이 들어있음.</p></br>
 		<ul>
 			<li>내용</li>

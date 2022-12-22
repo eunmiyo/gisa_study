@@ -145,10 +145,32 @@ public class MemberDAO {
 	}
 	
 	public String rankList(HttpServletRequest request, HttpServletResponse response) {
-		ArrayList<Rank> rankList = new ArrayList<Rank>();
+		ArrayList<Rank> ranklist = new ArrayList<Rank>();
 		
 		try {
 			conn = getConnection();
+			String sql = "SELECT V.M_NO, V.M_NAME, C.COUNTS "
+					+ "FROM (SELECT M_NO, COUNT(M_NO) COUNTS FROM TBL_VOTE_202005 GROUP BY M_NO) C "
+					+ "JOIN (TBL_MEMBER_202005 V) "
+					+ "ON (C.M_NO = V.M_NO) "
+					+ "ORDER BY C.COUNTS DESC";
+			
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Rank rank = new Rank();
+				rank.setNo(rs.getInt(1));
+				rank.setName(rs.getString(2));
+				rank.setCounts(rs.getInt(3));
+				
+				ranklist.add(rank);
+			}
+			request.setAttribute("ranklist", ranklist);
+			
+			conn.close();
+			ps.close();
+			rs.close();
 			
 		} catch (Exception e) {
 			e.printStackTrace();

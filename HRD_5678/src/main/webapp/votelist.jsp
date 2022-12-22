@@ -19,6 +19,7 @@ voterList = (ArrayList<Voter>)request.getAttribute("voterList");
 </head>
 <body>
 	<%@ include file="top.jsp" %>
+		<section>	
 		<div class="title">투표검수조회</div>
 		<div class="wrapper ">
 			<table>
@@ -44,6 +45,7 @@ voterList = (ArrayList<Voter>)request.getAttribute("voterList");
 				<% } %>
 			</table>
 		</div>
+		</section>
 	<%@ include file="footer.jsp" %>
 </body>
 </html>
