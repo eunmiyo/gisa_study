@@ -60,6 +60,9 @@ public class MemberController extends HttpServlet {
 		case "/modify":
 			site = member.modify(request, response);
 			break;
+		case "/result":
+			site = member.selectResult(request, response);
+			break;
 		case "/update" : 
 			int result1 = member.update(request, response);
 			response.setContentType("text/html; charset=UTF-8");
@@ -78,7 +81,24 @@ public class MemberController extends HttpServlet {
 				out.flush();
 			}
 		 break;
-
+		case "/delete" : 
+			int result2 = member.delete(request, response);
+			response.setContentType("text/html; charset=UTF-8");
+			out = response.getWriter();
+			
+			if(result2 == 1) { //삭제성공
+				//location.href = '/HRD_1234';
+				out.print("<script>");
+				out.print("alert('회원삭제가 완료 되었습니다!'); location.href='" + context + "';");
+				out.print("</script>");
+				out.flush();
+			} else {
+				out.print("<script>");
+				out.print("alert('삭제실패!'); location.href='" + context + "';");
+				out.print("</script>");
+				out.flush();
+			}
+		 break;
 		}
 
 		getServletContext().getRequestDispatcher("/" + site).forward(request, response);

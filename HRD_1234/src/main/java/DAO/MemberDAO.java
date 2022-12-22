@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import DTO.Member;
+import DTO.Money;
 
 public class MemberDAO {
 	Connection conn = null;
@@ -103,12 +104,12 @@ public class MemberDAO {
 			while(rs.next()) {
 				Member member = new Member();
 				member.setCustno(rs.getInt(1));
-				member.setCustname(rs.getNString(2));
-				member.setPhone(rs.getNString(3));
-				member.setAddress(rs.getNString(4));
-				member.setJoindate(rs.getNString(5));
-				member.setGrade(rs.getNString(6));
-				member.setCity(rs.getNString(7));
+				member.setCustname(rs.getString(2));
+				member.setPhone(rs.getString(3));
+				member.setAddress(rs.getString(4));
+				member.setJoindate(rs.getString(5));
+				member.setGrade(rs.getString(6));
+				member.setCity(rs.getString(7));
 				
 				list.add(member);
 			}
@@ -163,6 +164,45 @@ public class MemberDAO {
 		return "modify.jsp";
 	}
 	
+	//회원매출조회
+	public String selectResult(HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<Money> list = new ArrayList<Money>();
+		
+		try {
+			conn = getConnection();
+			String sql = "select m1.custno, m1.custname, DECODE(grade, 'A', 'VIP', 'B', '일반', '직원') grade, sum(m2.price) price "
+					+ "from member_tbl_02 m1, "
+					+ "money_tbl_02 m2 "
+					+ "where m1.custno = m2.custno "
+					+ "group by (m1.custno, m1.custname, grade) "
+					+ "order by price desc";
+			
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Money money = new Money();
+				money.setCustno(rs.getInt(1));
+				money.setCustname(rs.getString(2));
+				money.setGrade(rs.getString(3));
+				money.setPrice(rs.getInt(4));
+				
+				list.add(money);
+			}
+			
+			request.setAttribute("list", list);
+			
+			conn.close();
+			ps.close();
+			rs.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "result.jsp";
+	}
+	
 	//회원정보 수정 업데이트
 	public int update(HttpServletRequest request, HttpServletResponse response) {
 		int custno = Integer.parseInt(request.getParameter("custno"));
@@ -208,6 +248,28 @@ public class MemberDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return result;
+	}
+	
+	//회원삭제
+	public int delete(HttpServletRequest request, HttpServletResponse response) {
+		int result = 0;
+		
+		try {
+			conn = getConnection();
+			String custno = request.getParameter("custno");
+			String sql = "delete from member_tbl_02 where custno=" + custno;
+			
+			ps = conn.prepareStatement(sql);
+			result = ps.executeUpdate(); //쿼리문 실행	
+			
+			conn.close();
+			ps.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		return result;
 	}
 }
