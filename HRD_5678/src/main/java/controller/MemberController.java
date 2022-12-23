@@ -67,7 +67,7 @@ public class MemberController extends HttpServlet {
 			site = member.voteList(request, response);
 			break;
 			
-		case "/ranklist" :
+		case "/rank" :
 			site = member.rankList(request, response);
 			break;
 					

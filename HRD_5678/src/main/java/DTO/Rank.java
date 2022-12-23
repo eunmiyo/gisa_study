@@ -1,14 +1,14 @@
 package DTO;
 
 public class Rank {
-	int no;
+	String no;
 	String name;
-	int counts;
+	String counts;
 	
-	public int getNo() {
+	public String getNo() {
 		return no;
 	}
-	public void setNo(int no) {
+	public void setNo(String no) {
 		this.no = no;
 	}
 	public String getName() {
@@ -17,11 +17,11 @@ public class Rank {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getCounts() {
+	public String getCounts() {
 		return counts;
 	}
-	public void setCounts(int counts) {
+	public void setCounts(String counts) {
 		this.counts = counts;
-	}
-	
+	}	
+
 }

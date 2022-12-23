@@ -115,7 +115,7 @@ public class MemberDAO {
 					+ "DECODE(SUBSTR(V_JUMIN, 7, 1), '1', '남자', '2', '여자', '3', '남자', '4', '여자', '5', '남자', '6', '여자') 성별, "
 					+ "M_NO,SUBSTR(V_TIME, 1, 2)||':'||SUBSTR(V_TIME, 3, 2) 투표시간, "
 					+ "DECODE(V_CONFIRM, 'N', '미확인', 'Y', '확인') 유권자확인 "
-					+ "FROM TBL_VOTE_202005";
+					+ "FROM TBL_VOTE_202005 WHERE V_AREA='제1투표장' ";
 			
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
@@ -149,20 +149,20 @@ public class MemberDAO {
 		
 		try {
 			conn = getConnection();
-			String sql = "SELECT V.M_NO, V.M_NAME, C.COUNTS "
-					+ "FROM (SELECT M_NO, COUNT(M_NO) COUNTS FROM TBL_VOTE_202005 GROUP BY M_NO) C "
-					+ "JOIN (TBL_MEMBER_202005 V) "
-					+ "ON (C.M_NO = V.M_NO) "
-					+ "ORDER BY C.COUNTS DESC";
+			String sql = "SELECT M.M_NO, M.M_NAME, V.COUNTS "
+					+ "FROM (SELECT M_NO, COUNT(M_NO)COUNTS FROM TBL_VOTE_202005 WHERE V_CONFIRM='Y' GROUP BY M_NO) V "
+					+ "JOIN (TBL_MEMBER_202005 M) "
+					+ "ON(V.M_NO = M.M_NO) "
+					+ "ORDER BY V.COUNTS DESC ";
 			
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 			
 			while(rs.next()) {
 				Rank rank = new Rank();
-				rank.setNo(rs.getInt(1));
+				rank.setNo(rs.getString(1));
 				rank.setName(rs.getString(2));
-				rank.setCounts(rs.getInt(3));
+				rank.setCounts(rs.getString(3));
 				
 				ranklist.add(rank);
 			}
